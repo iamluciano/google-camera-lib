@@ -298,6 +298,22 @@ public class CameraActivity extends QuickActivity implements AppController, Came
     private final Profiler mProfiler = Profilers.instance().guard();
 
     /**
+     * iamluciano - custom setup
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (mCameraAppUI != null) {
+            // disable photo/video mode selection and gallery gestures
+            mCameraAppUI.setSwipeEnabled(false);
+            // remove three dots circular button for options
+            mCameraAppUI.hideModeOptions();
+            // hide captured media thumbnail - see comment widget.RoundedThumbnailView@481
+            mCameraAppUI.hideCaptureIndicator();
+        }
+    }
+
+    /**
      * First run dialog
      */
     private FirstRunDialog mFirstRunDialog;
@@ -1558,7 +1574,9 @@ public class CameraActivity extends QuickActivity implements AppController, Came
 
     private boolean isCaptureIntent()
     {
-        if (MediaStore.ACTION_VIDEO_CAPTURE.equals(getIntent().getAction()) || MediaStore.ACTION_IMAGE_CAPTURE.equals
+        // iamluciano - disable first run dialog, view mode hint (prevent mode list from briefly appearing on start)
+        return true;
+        /*if (MediaStore.ACTION_VIDEO_CAPTURE.equals(getIntent().getAction()) || MediaStore.ACTION_IMAGE_CAPTURE.equals
                 (getIntent()
                         .getAction()) || MediaStore.ACTION_IMAGE_CAPTURE_SECURE.equals(getIntent().getAction()))
         {
@@ -1566,7 +1584,7 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         } else
         {
             return false;
-        }
+        }*/
     }
 
     /**
@@ -2043,8 +2061,10 @@ public class CameraActivity extends QuickActivity implements AppController, Came
 
     private void setRotationAnimation()
     {
-        int rotationAnimation = WindowManager.LayoutParams.ROTATION_ANIMATION_ROTATE;
-        rotationAnimation = WindowManager.LayoutParams.ROTATION_ANIMATION_CROSSFADE;
+        // iamluciano - disable any rotation animation
+        //int rotationAnimation = WindowManager.LayoutParams.ROTATION_ANIMATION_ROTATE;
+        //rotationAnimation = WindowManager.LayoutParams.ROTATION_ANIMATION_CROSSFADE;
+        final int rotationAnimation = WindowManager.LayoutParams.ROTATION_ANIMATION_SEAMLESS;
         Window win = getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
         winParams.rotationAnimation = rotationAnimation;

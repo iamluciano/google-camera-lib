@@ -1142,6 +1142,8 @@ public class CameraAppUI implements ModeListView.ModeSwitchListener,
      */
     private void showModeCoverUntilPreviewReady()
     {
+        // iamluciano - disable "splash screen" like view
+        /*
         int modeId = mController.getCurrentModuleIndex();
         int colorId = R.color.camera_gray_background;
         ;
@@ -1159,7 +1161,7 @@ public class CameraAppUI implements ModeListView.ModeSwitchListener,
                 }
             }
         };
-        mModeCoverState = COVER_SHOWN;
+        mModeCoverState = COVER_SHOWN;*/
     }
 
     private void showShimmyDelayed()

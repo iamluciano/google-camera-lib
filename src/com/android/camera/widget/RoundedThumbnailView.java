@@ -478,6 +478,8 @@ public class RoundedThumbnailView extends View
      */
     public void setThumbnail(final Bitmap thumbnailBitmap, final int rotation)
     {
+        // iamluciano - completely disable this thumbnail view
+        /*
         MainThread.checkMainThread();
 
         if (mPendingRequest != null)
@@ -488,7 +490,7 @@ public class RoundedThumbnailView extends View
         } else
         {
             Log.e(TAG, "Pending thumb was null!");
-        }
+        }*/
     }
 
     /**
