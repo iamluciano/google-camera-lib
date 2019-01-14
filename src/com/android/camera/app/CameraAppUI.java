@@ -2013,9 +2013,11 @@ public class CameraAppUI implements ModeListView.ModeSwitchListener,
      */
     public void showModeOptions()
     {
+        // iamluciano - completely disable options
+        return;
         /* Make mode options clickable. */
-        enableModeOptions();
-        mModeOptionsOverlay.setVisibility(View.VISIBLE);
+        //enableModeOptions();
+        //mModeOptionsOverlay.setVisibility(View.VISIBLE);
     }
 
     /**

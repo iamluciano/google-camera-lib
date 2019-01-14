@@ -298,19 +298,40 @@ public class CameraActivity extends QuickActivity implements AppController, Came
     private final Profiler mProfiler = Profilers.instance().guard();
 
     /**
-     * iamluciano - custom setup
+     * iamluciano - custom methods
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (mCameraAppUI != null) {
-            // disable photo/video mode selection and gallery gestures
-            mCameraAppUI.setSwipeEnabled(false);
-            // remove three dots circular button for options
-            mCameraAppUI.hideModeOptions();
-            // hide captured media thumbnail - see comment widget.RoundedThumbnailView@481
-            mCameraAppUI.hideCaptureIndicator();
+        if (mCameraAppUI == null) {
+            return;
         }
+        // disable photo/video mode selection and gallery gestures
+        mCameraAppUI.setSwipeEnabled(false);
+        // remove three dots circular button for options - see also app.CameraAppUI@2016
+        mCameraAppUI.hideModeOptions();
+        // hide captured media thumbnail - see comment widget.RoundedThumbnailView@481
+        mCameraAppUI.hideCaptureIndicator();
+    }
+
+    public int getLayoutResId() {
+        return R.layout.activity_camera;
+    }
+
+    public void setPhotoMode() {
+        if (mCameraAppUI == null) {
+            return;
+        }
+        final int mode = getResources().getInteger(R.integer.camera_mode_photo);
+        onModeSelected(mode);
+    }
+
+    public void setVideoMode() {
+        if (mCameraAppUI == null) {
+            return;
+        }
+        final int mode = getResources().getInteger(R.integer.camera_mode_video);
+        onModeSelected(mode);
     }
 
     /**
@@ -1777,7 +1798,9 @@ public class CameraActivity extends QuickActivity implements AppController, Came
 
         profile.mark();
 
-        setContentView(R.layout.activity_camera);
+        // iamluciano - support for custom ui layout
+        setContentView(getLayoutResId());
+        //setContentView(R.layout.activity_camera);
         profile.mark("setContentView()");
 
         // A window background is set in styles.xml for the system to show a
@@ -1975,6 +1998,9 @@ public class CameraActivity extends QuickActivity implements AppController, Came
      */
     private int getModeIndex()
     {
+        // iamluciano - always start with photo mode
+        return getResources().getInteger(R.integer.camera_mode_photo);
+        /*
         int modeIndex = -1;
         int photoIndex = getResources().getInteger(R.integer.camera_mode_photo);
         int videoIndex = getResources().getInteger(R.integer.camera_mode_video);
@@ -2014,7 +2040,7 @@ public class CameraActivity extends QuickActivity implements AppController, Came
                 modeIndex = photoIndex;
             }
         }
-        return modeIndex;
+        return modeIndex;*/
     }
 
     /**
