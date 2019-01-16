@@ -66,6 +66,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 
+import android.widget.Toolbar;
 import com.android.camera.app.AppController;
 import com.android.camera.app.CameraAppUI;
 import com.android.camera.app.CameraController;
@@ -104,6 +105,7 @@ import com.android.camera.data.VideoItemFactory;
 import com.android.camera.debug.Log;
 import com.android.camera.device.ActiveCameraDeviceTracker;
 import com.android.camera.device.CameraId;
+import com.android.camera.exif.Rational;
 import com.android.camera.filmstrip.FilmstripContentPanel;
 import com.android.camera.filmstrip.FilmstripController;
 import com.android.camera.module.ModuleController;
@@ -117,13 +119,7 @@ import com.android.camera.one.config.OneCameraFeatureConfigCreator;
 import com.android.camera.session.CaptureSession;
 import com.android.camera.session.CaptureSessionManager;
 import com.android.camera.session.CaptureSessionManager.SessionListener;
-import com.android.camera.settings.AppUpgrader;
-import com.android.camera.settings.CameraSettingsActivity;
-import com.android.camera.settings.Keys;
-import com.android.camera.settings.PictureSizeLoader;
-import com.android.camera.settings.ResolutionSetting;
-import com.android.camera.settings.ResolutionUtil;
-import com.android.camera.settings.SettingsManager;
+import com.android.camera.settings.*;
 import com.android.camera.stats.UsageStatistics;
 import com.android.camera.stats.profiler.Profile;
 import com.android.camera.stats.profiler.Profiler;
@@ -135,15 +131,8 @@ import com.android.camera.ui.MainActivityLayout;
 import com.android.camera.ui.ModeListView;
 import com.android.camera.ui.ModeListView.ModeListVisibilityChangedListener;
 import com.android.camera.ui.PreviewStatusListener;
-import com.android.camera.util.ApiHelper;
-import com.android.camera.util.Callback;
-import com.android.camera.util.CameraUtil;
-import com.android.camera.util.GalleryHelper;
-import com.android.camera.util.GcamHelper;
-import com.android.camera.util.IntentHelper;
+import com.android.camera.util.*;
 import com.android.camera.util.PhotoSphereHelper.PanoramaViewHelper;
-import com.android.camera.util.QuickActivity;
-import com.android.camera.util.ReleaseHelper;
 import com.android.camera.widget.FilmstripView;
 import com.android.camera.widget.Preloader;
 import com.android.camera2.R;
@@ -310,7 +299,7 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         mCameraAppUI.setSwipeEnabled(false);
         // remove three dots circular button for options - see also app.CameraAppUI@2016
         mCameraAppUI.hideModeOptions();
-        // hide captured media thumbnail - see comment widget.RoundedThumbnailView@481
+        // hide captured media thumbnail - see comment in widget.RoundedThumbnailView@481
         mCameraAppUI.hideCaptureIndicator();
     }
 
@@ -332,6 +321,18 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         }
         final int mode = getResources().getInteger(R.integer.camera_mode_video);
         onModeSelected(mode);
+    }
+
+    // on first run gcamera app selects the resolution with the largest pixel count
+    // no mater its aspect ratio -- see AppUpgrader.java@371
+    public void selectHighestAvailableResolution(int ratioNumerator, int ratioDenominator) {
+        final boolean cachedOnly = true;
+        final PictureSizeLoader psl = new PictureSizeLoader(this, cachedOnly);
+        final PictureSizeLoader.PictureSizes pictureSizes = psl.computePictureSizes();
+        final Rational aspectRatio = new Rational(ratioNumerator, ratioDenominator);
+        final Size preferredSize = ResolutionUtil.getLargestPictureSize(aspectRatio, pictureSizes.backCameraSizes);
+        final String setting = SettingsUtil.sizeToSettingString(preferredSize);
+        mSettingsManager.set(SettingsManager.SCOPE_GLOBAL, Keys.KEY_PICTURE_SIZE_BACK, setting);
     }
 
     /**
@@ -1814,6 +1815,12 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         getWindow().setBackgroundDrawable(null);
 
         mActionBar = getActionBar();
+        // iamluciano - avoid possible NPEs when using a theme other than the gcam supplied one
+        if (mActionBar == null) {
+            setActionBar(new Toolbar(this));
+            mActionBar = getActionBar();
+        }
+
         // set actionbar background to 100% or 50% transparent
         if (ApiHelper.isLOrHigher())
         {
@@ -1998,7 +2005,7 @@ public class CameraActivity extends QuickActivity implements AppController, Came
      */
     private int getModeIndex()
     {
-        // iamluciano - always start with photo mode
+        // iamluciano - always start in photo mode
         return getResources().getInteger(R.integer.camera_mode_photo);
         /*
         int modeIndex = -1;

@@ -28,6 +28,9 @@ import com.android.camera2.R;
  */
 public class PermissionsActivity extends QuickActivity
 {
+    // iamluciano - see comment@293
+    public static Class cameraActivityClass = null;
+
     private static final Log.Tag TAG = new Log.Tag("PermissionsActivity");
 
     private static int PERMISSION_REQUEST_CODE = 1;
@@ -288,7 +291,11 @@ public class PermissionsActivity extends QuickActivity
 
     private void handlePermissionsSuccess()
     {
-        Intent intent = new Intent(this, CameraActivity.class);
+        // iamluciano - allow targeting arbitrary camera activity subclasses
+        // this is the only useful reference to the camera class in the gcamera app
+        // all others belong to unit testing stuff
+        Intent intent = new Intent(this, cameraActivityClass == null ? CameraActivity.class : cameraActivityClass);
+        //Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
         finish();
     }
