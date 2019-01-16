@@ -289,9 +289,12 @@ public class CameraActivity extends QuickActivity implements AppController, Came
     /**
      * iamluciano - custom methods
      */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+    public int getLayoutResId() {
+        return R.layout.activity_camera;
+    }
+
+    public void hideUi() {
         if (mCameraAppUI == null) {
             return;
         }
@@ -301,10 +304,25 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         mCameraAppUI.hideModeOptions();
         // hide captured media thumbnail - see comment in widget.RoundedThumbnailView@481
         mCameraAppUI.hideCaptureIndicator();
+        // hide shutter button
+        mCameraAppUI.hideBottomBar();
     }
 
-    public int getLayoutResId() {
-        return R.layout.activity_camera;
+    // on first run gcamera app selects the resolution with the largest pixel count
+    // no mater its aspect ratio -- see AppUpgrader.java@371
+    public void selectHighestAvailableResolution(int ratioNumerator, int ratioDenominator) {
+        final boolean cachedOnly = true;
+        final PictureSizeLoader psl = new PictureSizeLoader(this, cachedOnly);
+        final PictureSizeLoader.PictureSizes pictureSizes = psl.computePictureSizes();
+        final Rational aspectRatio = new Rational(ratioNumerator, ratioDenominator);
+        final Size preferredSize = ResolutionUtil.getLargestPictureSize(aspectRatio, pictureSizes.backCameraSizes);
+        final String setting = SettingsUtil.sizeToSettingString(preferredSize);
+        mSettingsManager.set(SettingsManager.SCOPE_GLOBAL, Keys.KEY_PICTURE_SIZE_BACK, setting);
+    }
+
+    // see VideoModule.java@858
+    public void setMaxVideoDuration(int seconds) {
+        getIntent().putExtra(MediaStore.EXTRA_DURATION_LIMIT, seconds);
     }
 
     public void setPhotoMode() {
@@ -321,18 +339,6 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         }
         final int mode = getResources().getInteger(R.integer.camera_mode_video);
         onModeSelected(mode);
-    }
-
-    // on first run gcamera app selects the resolution with the largest pixel count
-    // no mater its aspect ratio -- see AppUpgrader.java@371
-    public void selectHighestAvailableResolution(int ratioNumerator, int ratioDenominator) {
-        final boolean cachedOnly = true;
-        final PictureSizeLoader psl = new PictureSizeLoader(this, cachedOnly);
-        final PictureSizeLoader.PictureSizes pictureSizes = psl.computePictureSizes();
-        final Rational aspectRatio = new Rational(ratioNumerator, ratioDenominator);
-        final Size preferredSize = ResolutionUtil.getLargestPictureSize(aspectRatio, pictureSizes.backCameraSizes);
-        final String setting = SettingsUtil.sizeToSettingString(preferredSize);
-        mSettingsManager.set(SettingsManager.SCOPE_GLOBAL, Keys.KEY_PICTURE_SIZE_BACK, setting);
     }
 
     /**
