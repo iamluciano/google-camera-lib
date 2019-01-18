@@ -290,7 +290,11 @@ public class CameraActivity extends QuickActivity implements AppController, Came
      * iamluciano - custom methods
      */
 
-    public int getLayoutResId() {
+    public void setCameraActivityClass(Class clazz) {
+        PermissionsActivity.cameraActivityClass = clazz;
+    }
+
+    public int getLayoutResourceId() {
         return R.layout.activity_camera;
     }
 
@@ -1806,7 +1810,7 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         profile.mark();
 
         // iamluciano - support for custom ui layout
-        setContentView(getLayoutResId());
+        setContentView(getLayoutResourceId());
         //setContentView(R.layout.activity_camera);
         profile.mark("setContentView()");
 
