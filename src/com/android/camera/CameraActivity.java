@@ -286,12 +286,16 @@ public class CameraActivity extends QuickActivity implements AppController, Came
     private MotionManager mMotionManager;
     private final Profiler mProfiler = Profilers.instance().guard();
 
-    /**
+    /**setCameraActivityClass
      * iamluciano - custom methods
      */
 
     public void setCameraActivityClass(Class clazz) {
         PermissionsActivity.cameraActivityClass = clazz;
+    }
+
+    public boolean hasPermissions() {
+        return mHasCriticalPermissions;
     }
 
     public int getLayoutResourceId() {
