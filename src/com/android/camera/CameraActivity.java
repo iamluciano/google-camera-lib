@@ -302,7 +302,7 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         return R.layout.activity_camera;
     }
 
-    public void hideUi() {
+    public void hideGoogleDefaultUi() {
         if (mCameraAppUI == null) {
             return;
         }

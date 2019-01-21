@@ -137,7 +137,7 @@ public abstract class QuickActivity extends FragmentActivity
     }
 
     @Override
-    protected final void onStart()
+    protected void onStart()
     {
         logLifecycle("onStart", true);
         onStartTasks();
