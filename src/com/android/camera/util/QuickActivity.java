@@ -27,6 +27,8 @@ import com.android.camera.debug.Log;
 
 import javax.annotation.Nullable;
 
+import androidx.fragment.app.FragmentActivity;
+
 /**
  * Workaround for lockscreen double-onResume() bug:
  * <p>
@@ -54,7 +56,7 @@ import javax.annotation.Nullable;
  * started from a lockscreen will result in a quick no-op.<br>
  * </p>
  */
-public abstract class QuickActivity extends Activity
+public abstract class QuickActivity extends FragmentActivity
 {
     private static final Log.Tag TAG = new Log.Tag("QuickActivity");
 
