@@ -128,7 +128,10 @@ public class ButtonManager implements SettingsManager.OnSettingChangedListener
         sGcamIndex = context.getResources().getInteger(R.integer.camera_mode_gcam);
 
         mSettingsManager = app.getSettingsManager();
-        mSettingsManager.addListener(this);
+        // iamluciano - avoid npe
+        if (mSettingsManager != null) {
+            mSettingsManager.addListener(this);
+        }
     }
 
     /**

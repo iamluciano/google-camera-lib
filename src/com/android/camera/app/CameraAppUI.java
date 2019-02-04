@@ -1383,6 +1383,10 @@ public class CameraAppUI implements ModeListView.ModeSwitchListener,
          */
         if (hardwareSpec != null)
         {
+            // iamluciano - avoid npe
+            if (mController.getSettingsManager() == null) {
+                return;
+            }
             if (!mController.getSettingsManager().isSet(SettingsManager.SCOPE_GLOBAL,
                     Keys.KEY_FLASH_SUPPORTED_BACK_CAMERA))
             {

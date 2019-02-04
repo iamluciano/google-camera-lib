@@ -146,7 +146,7 @@ public abstract class QuickActivity extends FragmentActivity
     }
 
     @Override
-    protected final void onResume()
+    protected void onResume()
     {
         logLifecycle("onResume", true);
 
