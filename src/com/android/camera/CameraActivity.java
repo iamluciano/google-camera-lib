@@ -2543,7 +2543,10 @@ public class CameraActivity extends QuickActivity implements AppController, Came
     protected void onStopTasks()
     {
         mIsActivityRunning = false;
-        mPanoramaViewHelper.onStop();
+        // iamluciano: avoid npe
+        if (mPanoramaViewHelper != null) {
+            mPanoramaViewHelper.onStop();
+        }
 
         mLocationManager.disconnect();
     }
