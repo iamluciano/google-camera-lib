@@ -313,7 +313,7 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         // hide captured media thumbnail - see comment in widget.RoundedThumbnailView@481
         mCameraAppUI.hideCaptureIndicator();
         // hide shutter button
-        mCameraAppUI.hideBottomBar();
+        //mCameraAppUI.hideBottomBar();
     }
 
     // on first run gcamera app selects the resolution with the largest pixel count
@@ -328,9 +328,15 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         mSettingsManager.set(SettingsManager.SCOPE_GLOBAL, Keys.KEY_PICTURE_SIZE_BACK, setting);
     }
 
+    // iamluciano - ability to set max video duration after camera activity creation
     // see VideoModule.java@858
-    public void setMaxVideoDuration(int seconds) {
-        getIntent().putExtra(MediaStore.EXTRA_DURATION_LIMIT, seconds);
+    private int mMaxVideoDurationInMs = 0;
+    public int getMaxVideoDurationInMs() {
+        return mMaxVideoDurationInMs;
+    }
+
+    public void setMaxVideoDurationInMs(int maxVideoDurationInMs) {
+        mMaxVideoDurationInMs = maxVideoDurationInMs;
     }
 
     public void setPhotoMode() {

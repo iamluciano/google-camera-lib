@@ -551,14 +551,15 @@ public class CaptureModule extends CameraModule implements
         mHeadingSensor = new HeadingSensor(AndroidServices.instance().provideSensorManager());
 
         View cancelButton = activity.findViewById(R.id.shutter_cancel_button);
-        cancelButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                cancelCountDown();
-            }
-        });
+        // iamluciano - this can be null when using custom layout
+        if (cancelButton != null) {
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cancelCountDown();
+                }
+            });
+        }
 
         mMediaActionSound.load(MediaActionSound.SHUTTER_CLICK);
         guard.stop();

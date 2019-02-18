@@ -866,6 +866,11 @@ public class VideoModule extends CameraModule
                     .getAndroidContext());
         }
 
+        // iamluciano - ability to set max video duration after camera activity creation
+        if (mActivity.getMaxVideoDurationInMs() != 0) {
+            mMaxVideoDurationInMs = mActivity.getMaxVideoDurationInMs();
+        }
+
         // If quality is not supported, request QUALITY_HIGH which is always supported.
         if (CamcorderProfile.hasProfile(mCameraId, quality) == false)
         {

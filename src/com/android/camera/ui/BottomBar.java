@@ -336,7 +336,7 @@ public class BottomBar extends FrameLayout
         return mMode == MODE_INTENT_REVIEW;
     }
 
-    private void setButtonImageLevels(int level)
+    protected void setButtonImageLevels(int level)
     {
         ((ImageButton) findViewById(R.id.cancel_button)).setImageLevel(level);
         ((ImageButton) findViewById(R.id.done_button)).setImageLevel(level);
