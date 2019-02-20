@@ -339,12 +339,8 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         mMaxVideoDurationInMs = maxVideoDurationInMs;
     }
 
-    public void setPhotoMode() {
-        if (mCameraAppUI == null) {
-            return;
-        }
-        final int mode = getResources().getInteger(R.integer.camera_mode_photo);
-        onModeSelected(mode);
+    public boolean isVideoMode() {
+        return mCurrentModeIndex == getResources().getInteger(R.integer.camera_mode_video);
     }
 
     public void setVideoMode() {
@@ -352,6 +348,18 @@ public class CameraActivity extends QuickActivity implements AppController, Came
             return;
         }
         final int mode = getResources().getInteger(R.integer.camera_mode_video);
+        onModeSelected(mode);
+    }
+
+    public boolean isPhotoMode() {
+        return mCurrentModeIndex == getResources().getInteger(R.integer.camera_mode_photo);
+    }
+
+    public void setPhotoMode() {
+        if (mCameraAppUI == null) {
+            return;
+        }
+        final int mode = getResources().getInteger(R.integer.camera_mode_photo);
         onModeSelected(mode);
     }
 
@@ -2025,9 +2033,6 @@ public class CameraActivity extends QuickActivity implements AppController, Came
      */
     private int getModeIndex()
     {
-        // iamluciano - always start in photo mode
-        return getResources().getInteger(R.integer.camera_mode_photo);
-        /*
         int modeIndex = -1;
         int photoIndex = getResources().getInteger(R.integer.camera_mode_photo);
         int videoIndex = getResources().getInteger(R.integer.camera_mode_video);
@@ -2067,7 +2072,7 @@ public class CameraActivity extends QuickActivity implements AppController, Came
                 modeIndex = photoIndex;
             }
         }
-        return modeIndex;*/
+        return modeIndex;
     }
 
     /**
