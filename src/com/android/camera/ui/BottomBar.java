@@ -67,7 +67,8 @@ public class BottomBar extends FrameLayout
     private FrameLayout mCancelLayout;
     private TopRightWeightedLayout mIntentReviewLayout;
 
-    private ShutterButton mShutterButton;
+    // iamluciano - expose field to ease support for custom layouts
+    protected ShutterButton mShutterButton;
     private ImageButton mCancelButton;
 
     private int mBackgroundColor;

@@ -437,14 +437,14 @@ public class PhotoModule extends CameraModule implements PhotoController, Module
         // TODO: Make this a part of app controller API.
         // 取消倒计时
         View cancelButton = mActivity.findViewById(R.id.shutter_cancel_button);
-        cancelButton.setOnClickListener(new View.OnClickListener()
+        /*cancelButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 cancelCountDown();
             }
-        });
+        });*/
     }
 
     private void cancelCountDown()

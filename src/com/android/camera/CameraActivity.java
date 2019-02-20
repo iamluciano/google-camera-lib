@@ -1617,7 +1617,7 @@ public class CameraActivity extends QuickActivity implements AppController, Came
     private boolean isCaptureIntent()
     {
         // iamluciano - disable first run dialog, view mode hint (prevent mode list from briefly appearing on start)
-        return true;
+        return false;
         /*if (MediaStore.ACTION_VIDEO_CAPTURE.equals(getIntent().getAction()) || MediaStore.ACTION_IMAGE_CAPTURE.equals
                 (getIntent()
                         .getAction()) || MediaStore.ACTION_IMAGE_CAPTURE_SECURE.equals(getIntent().getAction()))

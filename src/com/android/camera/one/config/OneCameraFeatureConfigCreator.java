@@ -43,7 +43,10 @@ public class OneCameraFeatureConfigCreator
                                                        MemoryManager memoryManager)
     {
         // Enable CaptureModule on all M devices.
-        boolean useCaptureModule = true;
+        //boolean useCaptureModule = true;
+        // iamluciano - use PhotoModule instead of CaptureModule so we can hook
+        // into CameraActivity.notifyNewMedia(Uri uri)
+        boolean useCaptureModule = false;
         Log.i(TAG, "CaptureModule? " + useCaptureModule);
 
         // HDR+ has multiple levels of support.
