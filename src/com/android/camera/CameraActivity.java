@@ -323,7 +323,13 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         // hide captured media thumbnail - see comment in widget.RoundedThumbnailView@481
         mCameraAppUI.hideCaptureIndicator();
         // disable gallery swiping from right to left
-        setFilmstripUiVisibility(false);
+        // setFilmstripUiVisibility(false) is not enough
+        mAboveFilmstripControlLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;    // discard all events
+            }
+        });
         // mCameraAppUI.setSwipeEnabled(false) is not enough because
         // swipe is re-enabled on shutter button touch
         findViewById(R.id.mode_list_layout).setOnTouchListener(new View.OnTouchListener() {
