@@ -166,7 +166,7 @@ public class VideoModule extends CameraModule
     private CamcorderProfile mProfile;
 
     // The video duration limit. 0 means no limit.
-    private int mMaxVideoDurationInMs;
+    protected int mMaxVideoDurationInMs;
 
     boolean mPreviewing = false; // True if preview is started.
     // The display rotation in degrees. This is only valid when mPreviewing is
@@ -864,11 +864,6 @@ public class VideoModule extends CameraModule
         {
             mMaxVideoDurationInMs = SettingsUtil.getMaxVideoDuration(mActivity
                     .getAndroidContext());
-        }
-
-        // iamluciano - ability to set max video duration after camera activity creation
-        if (mActivity.getMaxVideoDurationInMs() != 0) {
-            mMaxVideoDurationInMs = mActivity.getMaxVideoDurationInMs();
         }
 
         // If quality is not supported, request QUALITY_HIGH which is always supported.

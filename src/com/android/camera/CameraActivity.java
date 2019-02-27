@@ -352,28 +352,26 @@ public class CameraActivity extends QuickActivity implements AppController, Came
         mSettingsManager.set(SettingsManager.SCOPE_GLOBAL, Keys.KEY_PICTURE_SIZE_BACK, setting);
     }
 
-    // iamluciano - ability to set max video duration after camera activity creation
-    // see VideoModule.java@858
-    private int mMaxVideoDurationInMs = 0;
-
-    public int getMaxVideoDurationInMs() {
-        return mMaxVideoDurationInMs;
-    }
-
-    public void setMaxVideoDurationInMs(int maxVideoDurationInMs) {
-        mMaxVideoDurationInMs = maxVideoDurationInMs;
-    }
-
     public boolean isVideoMode() {
         return mCurrentModeIndex == getResources().getInteger(R.integer.camera_mode_video);
     }
 
     public void setVideoMode() {
+        setVideoMode(0);    // disable max duration
+    }
+
+    // iamluciano - ability to set max video duration after camera activity creation
+    // see VideoModule.java@858
+    public void setVideoMode(int maxVideoDurationInMs) {
         if (mCameraAppUI == null) {
             return;
         }
         final int mode = getResources().getInteger(R.integer.camera_mode_video);
         onModeSelected(mode);
+        if (getCurrentModule() instanceof VideoModule) {
+            VideoModule videoModule = (VideoModule)getCurrentModule();
+            videoModule.mMaxVideoDurationInMs = maxVideoDurationInMs;
+        }
     }
 
     public boolean isPhotoMode() {
